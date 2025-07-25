@@ -8,7 +8,13 @@
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
     "watch": "nodemon --exec ts-node src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "NODE_ENV=development npx sequelize-cli db:migrate",
+    "migrate:undo": "NODE_ENV=development npx sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "NODE_ENV=development npx sequelize-cli db:migrate:undo:all",
+    "migrate:status": "NODE_ENV=development npx sequelize-cli db:migrate:status",
+    "migrate:production": "NODE_ENV=production npx sequelize-cli db:migrate",
+    "migrate:status:production": "NODE_ENV=production npx sequelize-cli db:migrate:status"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -32,6 +38,7 @@
     "@types/node": "^20.10.0",
     "@types/sequelize": "^6.12.0",
     "nodemon": "^3.0.0",
+    "sequelize-cli": "^6.6.3",
     "ts-node": "^10.9.0",
     "typescript": "^5.3.0"
   },
