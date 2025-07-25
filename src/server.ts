@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 import router from './routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { testConnection, syncDatabase } from './config/dbConnection';
 
 dotenv.config();
 
@@ -27,10 +28,18 @@ app.use(errorHandler);
 app.use("*", notFoundHandler);
 
 // Start server
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📱 Environment: ${process.env['NODE_ENV'] || 'development'}`);
   console.log(` Health check: http://localhost:${PORT}/health`);
+  
+  try {
+    await testConnection();
+    await syncDatabase();
+  } catch (error) {
+    console.error('❌ Database connection failed:', error);
+    process.exit(1);
+  }
 });
 
 // Graceful shutdown
