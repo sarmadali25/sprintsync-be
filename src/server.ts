@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import router from './routes';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+
 dotenv.config();
 
 const app = express();
@@ -18,11 +20,17 @@ app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(router);
 
+// Error handling middleware - MUST come after routes
+app.use(errorHandler);
+
+// 404 handler - MUST come after error handler
+app.use("*", notFoundHandler);
+
 // Start server
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📱 Environment: ${process.env['NODE_ENV'] || 'development'}`);
-  console.log(`�� Health check: http://localhost:${PORT}/health`);
+  console.log(` Health check: http://localhost:${PORT}/health`);
 });
 
 // Graceful shutdown
