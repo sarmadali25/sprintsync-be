@@ -54,7 +54,7 @@ class AuthService {
       // Verify password
       const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
       if (!isPasswordValid) {
-        throw new AuthError('Invalid email or password', 401);
+        throw new AuthError('Invalid password', 401);
       }
 
       // Generate JWT token
@@ -71,7 +71,6 @@ class AuthService {
       if (error instanceof AuthError) {
         throw error;
       }
-      console.log(error);
       throw new AuthError('Login failed', 500);
     }
   }

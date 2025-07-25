@@ -6,7 +6,7 @@ const router = Router();
 
 // Public routes
 router.post('/login', validateLogin, loginController);
-router.post('/register', validateRegister, registerController);
+router.post('/signup', validateRegister, registerController);
 
 
 export default router;
