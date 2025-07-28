@@ -4,7 +4,7 @@ import User from './User';
 
 // Interface for Task attributes
 interface TaskAttributes {
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: 'pending' | 'in_progress' | 'completed';
@@ -18,7 +18,7 @@ interface TaskAttributes {
 interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
 
 class Task extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
-  public id!: number;
+  public id!: string;
   public title!: string;
   public description!: string;
   public status!: 'pending' | 'in_progress' | 'completed';
@@ -32,8 +32,7 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> implements Task
 Task.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
       primaryKey: true,
     },
     title: {
