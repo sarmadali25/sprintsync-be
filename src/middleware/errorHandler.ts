@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthError } from "../utils/errors";
+import { AuthError, TaskError } from "../utils/errors";
 
 export const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
@@ -11,7 +11,13 @@ export const errorHandler = (err: Error, _req: Request, res: Response, _next: Ne
       message: err.message,
     });
   }
-  
+  if (err instanceof TaskError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      error: "Task Error",
+      message: err.message,
+    });
+  }
   // Handle Sequelize errors
   if (err.name === 'SequelizeUniqueConstraintError') {
     return res.status(400).json({
