@@ -40,8 +40,6 @@ export class AuthService {
         user: userWithoutPassword,
       };
     } catch (error) {
-      console.log("error============ :", (error as Error));
-      
       if (error instanceof AuthError) {
         throw error;
       }
@@ -54,13 +52,13 @@ export class AuthService {
       // Find user by email
       const user = await UserHandler.getUserWithEmail(credentials.email);
       if (!user) {
-        throw new AuthError('User not found', 401);
+        throw new AuthError('User not found with this email', 401);
       }
 
       // Verify password
       const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
       if (!isPasswordValid) {
-        throw new AuthError('Invalid password', 401);
+        throw new AuthError('Invalid password for this email', 401);
       }
 
       // Generate JWT token
