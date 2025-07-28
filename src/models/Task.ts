@@ -1,18 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import User from './User';
-
-// Interface for Task attributes
-interface TaskAttributes {
-  id: string;
-  title: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  assignedToId: number;
-  ownerId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { TaskAttributes } from '../types/task';
 
 // Interface for Task creation attributes (optional fields)
 interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
