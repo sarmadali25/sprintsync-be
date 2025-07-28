@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { User } from '../models';
 import { AuthError } from '../utils/errors';
 import { AuthResponse, RegisterData, LoginCredentials } from '../types/auth';
+import { UserHandler } from '../handlers/';
 
 
 class AuthService {
@@ -12,7 +12,7 @@ class AuthService {
   async register(data: RegisterData): Promise<AuthResponse> {
     try {
       // Check if user already exists
-      const existingUser = await User.findOne({ where: { email: data.email } });
+      const existingUser = await UserHandler.getUserWithEmail(data.email);
       if (existingUser) {
         throw new AuthError('User with this email already exists', 400);
       }
@@ -21,13 +21,15 @@ class AuthService {
       const hashedPassword = await bcrypt.hash(data.password, this.SALT_ROUNDS);
 
       // Create user
-      const user = await User.create({
+      const userData = {
         email: data.email,
         password: hashedPassword,
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phoneNumber
-      });
+      }
+
+      const user = await UserHandler.createUser(userData);
 
       // Return user data without password
       const { password: _, ...userWithoutPassword } = user.toJSON();
@@ -46,7 +48,7 @@ class AuthService {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       // Find user by email
-      const user = await User.findOne({ where: { email: credentials.email } });
+      const user = await UserHandler.getUserWithEmail(credentials.email);
       if (!user) {
         throw new AuthError('User not found', 401);
       }
@@ -76,9 +78,7 @@ class AuthService {
   }
 
   async getUserById(userId: number) {
-    const user = await User.findByPk(userId, {
-      attributes: { exclude: ['password'] }
-    });
+    const user = await UserHandler.getUserWithId(userId);
     
     if (!user) {
       throw new AuthError('User not found', 404);
