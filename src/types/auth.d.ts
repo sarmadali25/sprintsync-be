@@ -13,7 +13,7 @@ export interface RegisterData {
 
 export interface AuthResponse {
   user: {
-    id: number;
+    id: string;
     email: string;
     firstName: string;
     lastName: string;

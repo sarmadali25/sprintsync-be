@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { AuthError } from '../utils/errors';
 import { AuthResponse, RegisterData, LoginCredentials } from '../types/auth';
 import { UserHandler } from '../handlers/';
+import { v4 as uuidv4 } from 'uuid';
 
 
 class AuthService {
@@ -22,6 +23,7 @@ class AuthService {
 
       // Create user
       const userData = {
+        id: uuidv4(),
         email: data.email,
         password: hashedPassword,
         firstName: data.firstName,
@@ -38,6 +40,8 @@ class AuthService {
         user: userWithoutPassword,
       };
     } catch (error) {
+      console.log("error============ :", (error as Error));
+      
       if (error instanceof AuthError) {
         throw error;
       }
@@ -77,7 +81,7 @@ class AuthService {
     }
   }
 
-  async getUserById(userId: number) {
+  async getUserById(userId: string) {
     const user = await UserHandler.getUserWithId(userId);
     
     if (!user) {
@@ -87,7 +91,7 @@ class AuthService {
     return user;
   }
 
-  private generateToken(userId: number): string {
+  private generateToken(userId: string): string {
     return jwt.sign(
       { userId, iat: Date.now() },
       this.JWT_SECRET,
