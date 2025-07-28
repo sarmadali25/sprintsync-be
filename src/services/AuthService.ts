@@ -6,11 +6,11 @@ import { UserHandler } from '../handlers/';
 import { v4 as uuidv4 } from 'uuid';
 
 
-class AuthService {
-  private readonly JWT_SECRET = process.env['JWT_SECRET'] ?? 'your-secret-key';
-  private readonly SALT_ROUNDS = 12;
+export class AuthService {
+  private static readonly JWT_SECRET = process.env['JWT_SECRET'] ?? 'your-secret-key';
+  private static readonly SALT_ROUNDS = 12;
 
-  async register(data: RegisterData): Promise<AuthResponse> {
+  static async register(data: RegisterData): Promise<AuthResponse> {
     try {
       // Check if user already exists
       const existingUser = await UserHandler.getUserWithEmail(data.email);
@@ -49,7 +49,7 @@ class AuthService {
     }
   }
 
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  static async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       // Find user by email
       const user = await UserHandler.getUserWithEmail(credentials.email);
@@ -81,7 +81,7 @@ class AuthService {
     }
   }
 
-  async getUserById(userId: string) {
+  static async getUserById(userId: string) {
     const user = await UserHandler.getUserWithId(userId);
     
     if (!user) {
@@ -91,7 +91,7 @@ class AuthService {
     return user;
   }
 
-  private generateToken(userId: string): string {
+  private static generateToken(userId: string): string {
     return jwt.sign(
       { userId, iat: Date.now() },
       this.JWT_SECRET,
@@ -99,7 +99,7 @@ class AuthService {
     );
   }
 
-  verifyToken(token: string): { userId: number } {
+  static verifyToken(token: string): { userId: number } {
     try {
       const decoded = jwt.verify(token, this.JWT_SECRET) as { userId: number };
       return decoded;
@@ -109,5 +109,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
  

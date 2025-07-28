@@ -1,3 +1,4 @@
-import AuthService from "./AuthService";
+import {AuthService} from "./AuthService";
+import { TaskService } from "./TaskService";
 
-export { AuthService };
+export { AuthService, TaskService };
