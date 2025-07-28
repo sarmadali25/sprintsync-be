@@ -3,7 +3,7 @@ import { TaskService } from "../services";
 
 interface AuthenticatedRequest extends Request {
   user?: {
-    userId: number;
+    userId: string;
   };
 }
 
@@ -38,6 +38,7 @@ export class TaskController {
       }
       const task = await TaskService.getTaskById(taskId);
       return res.status(200).json({
+        success: true,
         message: "Task fetched successfully",
         data: task,
       });
@@ -62,6 +63,7 @@ export class TaskController {
         ownerId,
       });
       return res.status(201).json({
+        success: true,
         message: "Task created successfully",
         data: task,
       });
@@ -88,7 +90,8 @@ export class TaskController {
       if (req.body.ownerId !== undefined) updateData.ownerId = req.body.ownerId;
       
       const task = await TaskService.updateTask(taskId, updateData);
-      return res.status(201).json({
+      return res.status(200).json({
+        success: true,
         message: "Task updated successfully",
         data: task,
       });
@@ -106,7 +109,8 @@ export class TaskController {
         });
       }
       await TaskService.deleteTask(taskId);
-      return res.status(200).json({
+      return res.status(204).json({
+        success: true,
         message: "Task deleted successfully",
       });
     } catch (error) {

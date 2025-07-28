@@ -4,7 +4,7 @@ import { AuthError } from '../utils/errors';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
-    userId: number;
+    userId: string;
   };
 }
 
@@ -22,7 +22,7 @@ export const authenticateToken = async (
     }
 
     const decoded = AuthService.verifyToken(token);
-    req.user = decoded;
+    req.user = { userId: decoded.userId.toString() };
     
     next();
   } catch (error) {
