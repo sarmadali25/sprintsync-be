@@ -1,3 +1,4 @@
 import { UserHandler } from "./UserHandler";
+import { TaskHandler } from "./TaskHandler";
 
-export { UserHandler };
+export { UserHandler, TaskHandler };
