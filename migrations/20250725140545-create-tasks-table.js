@@ -5,8 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('tasks', {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
       },
       title: {
@@ -23,7 +22,7 @@ module.exports = {
         defaultValue: 'pending',
       },
       assignedToId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'users',
@@ -33,7 +32,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       ownerId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'users',
