@@ -6,18 +6,20 @@ export class UserHandler {
     return user;
   }
 
-  static async getUserWithId(id: number, exclude: string[] = ["password"]) {
+  static async getUserWithId(id: string, exclude: string[] = ["password"]) {
     const user = await User.findByPk(id, { attributes: { exclude } });
     return user;
   }
 
   static async createUser({
+    id,
     email,
     password,
     firstName,
     lastName,
     phoneNumber,
   }: {
+    id: string;
     email: string;
     password: string;
     firstName: string;
@@ -25,6 +27,7 @@ export class UserHandler {
     phoneNumber: string;
   }) {
     const user = await User.create({
+      id,
       email,
       password,
       firstName,
