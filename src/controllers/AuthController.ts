@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services";
 
+interface AuthenticatedRequest extends Request {
+  user?: {
+    userId: string;
+  };
+}
+
 export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -38,6 +44,19 @@ export class AuthController {
         success: true,
         message: "Registration successful",
         data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getCurrentUser(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const user = await AuthService.getUserById(req.user?.userId!);
+      res.status(200).json({
+        success: true,
+        message: "User fetched successfully",
+        data: user,
       });
     } catch (error) {
       next(error);
