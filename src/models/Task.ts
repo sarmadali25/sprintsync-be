@@ -13,6 +13,7 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> implements Task
   public status!: 'pending' | 'in_progress' | 'completed';
   public assignedToId!: number;
   public ownerId!: number;
+  public totalTime!: string;
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -29,7 +30,7 @@ Task.init(
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     status: {
@@ -53,7 +54,12 @@ Task.init(
         key: 'id',
       },
     },
+    totalTime:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   },
+
   {
     sequelize,
     tableName: 'tasks',

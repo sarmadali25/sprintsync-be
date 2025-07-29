@@ -5,6 +5,7 @@ export interface TaskAttributes {
   status: "pending" | "in_progress" | "completed";
   assignedToId: number;
   ownerId: number;
+  totalTime?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -15,4 +16,5 @@ export interface TaskUpdateAttributes {
   status?: "pending" | "in_progress" | "completed";
   assignedToId?: number;
   ownerId?: number;
+  totalTime?: string
 }
