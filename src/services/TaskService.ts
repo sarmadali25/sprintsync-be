@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { TaskHandler } from "../handlers";
-import { TaskError } from "../utils/errors";
+import { TaskError } from "../utils/errors.util";
 import { TaskAttributes, TaskUpdateAttributes } from "../types/task";
+import fetchPromptResult from '../utils/AI-generate.util';
 
 export class TaskService {
   static async getAllTasks() {
@@ -83,6 +84,16 @@ export class TaskService {
         throw error;
       }
       throw new TaskError("Failed to delete task", 500);
+    }
+  }
+
+  static async getDescriptionSuggestion(_title: string) {
+    const prompt = `Wite me a description for this task title: '${_title}' it should be max 100 words`;
+    try {
+      const description = await fetchPromptResult(prompt);
+      return description;
+    } catch (error) {
+      throw new TaskError("Failed to get description suggestion", 500);
     }
   }
 }

@@ -8,10 +8,15 @@ const router = Router();
 // User routes
 router.get("/", authenticateToken, TaskController.getAllTasks);
 router.get("/:id", authenticateToken, TaskController.getTaskById);
-router.patch("/:id", authenticateToken, validateUpdateTaskStatus, TaskController.updateTaskStatus);
+router.patch("/:id", authenticateToken, validateUpdateTaskStatus, TaskController.updateTask);
+
+
 // Admin routes
 router.post("/", authenticateAdmin, validateTask, TaskController.createTask);
 router.put("/:id", authenticateAdmin, validateUpdateTask, TaskController.updateTask);
 router.delete("/:id", authenticateAdmin, TaskController.deleteTask);
+// AI routes
+router.post("/description-suggesstion",authenticateAdmin,TaskController.getDescriptionSuggestion);
+
 
 export default router;
