@@ -10,6 +10,7 @@ router.post('/login', validateLogin, AuthController.login);
 router.post('/signup', validateRegister, AuthController.register);
 
 router.get('/me', authenticateToken, AuthController.getCurrentUser);
+router.get("/all",authenticateToken,AuthController.getAllUsers)
 
 
 export default router;

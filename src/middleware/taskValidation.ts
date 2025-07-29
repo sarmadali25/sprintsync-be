@@ -56,7 +56,7 @@ const validateTask = (req: Request, res: Response, next: NextFunction): Response
   if (error) {
     return res.status(400).json({
       error: "Validation failed",
-      details: error.details?.[0]?.message,
+      message: error.details?.[0]?.message,
     });
   }
 
@@ -69,7 +69,7 @@ const validateUpdateTask = (req: Request, res: Response, next: NextFunction): Re
   if (error) {
     return res.status(400).json({
       error: "Validation failed",
-      details: error.details?.[0]?.message,
+      message: error.details?.[0]?.message,
     });
   }
 

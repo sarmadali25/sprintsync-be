@@ -62,4 +62,17 @@ export class AuthController {
       next(error);
     }
   }
+
+  static async getAllUsers(_req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const users = await AuthService.getAllUsers();
+      res.status(200).json({
+        success: true,
+        message: "Users fetched successfully",
+        data: users,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -33,7 +33,13 @@ export class UserHandler {
       firstName,
       lastName,
       phoneNumber,
+      
     });
     return user;
+  }
+
+  static async getAllUsers() {
+    const users = await User.findAll();
+    return users;
   }
 }

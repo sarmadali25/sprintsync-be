@@ -20,7 +20,7 @@ const validateLogin = (req: Request, res: Response, next: NextFunction): Respons
   if (error) {
     return res.status(400).json({
       error: "Validation failed",
-      details: error.details?.[0]?.message,
+      message: error.details?.[0]?.message,
     });
   }
 
@@ -64,7 +64,7 @@ const validateRegister = (req: Request, res: Response, next: NextFunction): Resp
   if (error) {
     return res.status(400).json({
       error: "Validation failed",
-      details: error.details?.[0]?.message,
+      message: error.details?.[0]?.message,
     });
   }
 
