@@ -54,7 +54,7 @@ export class TaskController {
   ): Promise<Response | void> {
     try {
       const { title, description, status, assignedToId, ownerId } = req.body;
-      
+
       const task = await TaskService.createTask({
         title,
         description,
@@ -72,7 +72,11 @@ export class TaskController {
     }
   }
 
-  static async updateTask(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+  static async updateTask(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
     try {
       const taskId = req.params?.["id"];
       if (!taskId) {
@@ -80,15 +84,17 @@ export class TaskController {
           message: "Task ID is required",
         });
       }
-      
+
       // Only include fields that are actually provided in the request
       const updateData: any = {};
       if (req.body.title !== undefined) updateData.title = req.body.title;
-      if (req.body.description !== undefined) updateData.description = req.body.description;
+      if (req.body.description !== undefined)
+        updateData.description = req.body.description;
       if (req.body.status !== undefined) updateData.status = req.body.status;
-      if (req.body.assignedToId !== undefined) updateData.assignedToId = req.body.assignedToId;
+      if (req.body.assignedToId !== undefined)
+        updateData.assignedToId = req.body.assignedToId;
       if (req.body.ownerId !== undefined) updateData.ownerId = req.body.ownerId;
-      
+
       const task = await TaskService.updateTask(taskId, updateData);
       return res.status(200).json({
         success: true,
@@ -100,7 +106,11 @@ export class TaskController {
     }
   }
 
-  static async deleteTask(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+  static async deleteTask(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
     try {
       const taskId = req.params?.["id"];
       if (!taskId) {
@@ -118,7 +128,11 @@ export class TaskController {
     }
   }
 
-  static async updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+  static async updateTaskStatus(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
     try {
       const taskId = req.params?.["id"];
       if (!taskId) {
@@ -127,7 +141,21 @@ export class TaskController {
         });
       }
       const { status } = req.body;
-      const task = await TaskService.updateTask(taskId, { status });
+      const editObject: { status: "pending" | "in_progress" | "completed"; totalTime?: string } = { status };
+
+      if (status === "in_progress") {
+        const totalTime = new Date().toISOString();
+        editObject.totalTime = totalTime;
+      } else if (status === "completed") {
+        const currentTask = await TaskService.getTaskById(taskId);
+        const timeTaken =
+          new Date().getTime() - new Date(currentTask.totalTime).getTime();
+
+        const totalMinutes = Math.floor(timeTaken / (1000 * 60));
+        editObject.totalTime = totalMinutes.toString();
+      }
+
+      const task = await TaskService.updateTask(taskId, editObject);
       return res.status(200).json({
         success: true,
         message: "Task status updated successfully",
@@ -138,7 +166,11 @@ export class TaskController {
     }
   }
 
-  static async getDescriptionSuggestion(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+  static async getDescriptionSuggestion(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
     try {
       const { title } = req.body;
       const description = await TaskService.getDescriptionSuggestion(title);
