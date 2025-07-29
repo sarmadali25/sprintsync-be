@@ -18,6 +18,7 @@ export interface AuthResponse {
     firstName: string;
     lastName: string;
     phoneNumber?: string;
+    isAdmin?: boolean;
   };
   token?: string;
 }

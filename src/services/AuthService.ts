@@ -34,10 +34,10 @@ export class AuthService {
       const user = await UserHandler.createUser(userData);
 
       // Return user data without password
-      const { password: _, ...userWithoutPassword } = user.toJSON();
+      const { password: _, isAdmin, ...userWithoutPassword } = user.toJSON();
 
       return {
-        user: userWithoutPassword,
+        user: isAdmin ? { ...userWithoutPassword, isAdmin: true } : userWithoutPassword,
       };
     } catch (error) {
       if (error instanceof AuthError) {
@@ -68,10 +68,11 @@ export class AuthService {
       const token = this.generateToken(user.id);
 
       // Return user data without password
-      const { password: _, ...userWithoutPassword } = user.toJSON();
+      const { password: _,isAdmin, ...userWithoutPassword } = user.toJSON();
+
 
       return {
-        user: userWithoutPassword,
+        user: isAdmin ? { ...userWithoutPassword, isAdmin: true } : userWithoutPassword,
         token,
       };
     } catch (error) {
@@ -88,7 +89,8 @@ export class AuthService {
       if (!user) {
         throw new AuthError("User not found", 404);
       }
-      return user;
+      const { password: _, isAdmin, ...userWithoutPassword } = user.toJSON();
+      return isAdmin ? { ...userWithoutPassword, isAdmin: true } : userWithoutPassword;
     } catch (error) {
       if (error instanceof AuthError) {
         throw error;
@@ -100,7 +102,11 @@ export class AuthService {
   static async getAllUsers() {
     try {
       const users = await UserHandler.getAllUsers();
-      return users;
+      const sanitizedUsers = users.map((user) => {
+        const { password: _, isAdmin, ...userWithoutPassword } = user.toJSON();
+        return isAdmin ? { ...userWithoutPassword, isAdmin: true } : userWithoutPassword;
+      });
+      return sanitizedUsers;
     } catch (error) {
       if (error instanceof AuthError) {
         throw error;
