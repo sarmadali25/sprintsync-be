@@ -8,7 +8,7 @@ const router = Router();
 // User routes
 router.get("/", authenticateToken, TaskController.getAllTasks);
 router.get("/:id", authenticateToken, TaskController.getTaskById);
-router.patch("/:id", authenticateToken, validateUpdateTaskStatus, TaskController.updateTask);
+router.patch("/:id", authenticateToken, validateUpdateTaskStatus, TaskController.updateTaskStatus);
 
 
 // Admin routes

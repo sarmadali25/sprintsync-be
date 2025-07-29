@@ -118,6 +118,26 @@ export class TaskController {
     }
   }
 
+  static async updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const taskId = req.params?.["id"];
+      if (!taskId) {
+        return res.status(400).json({
+          message: "Task ID is required",
+        });
+      }
+      const { status } = req.body;
+      const task = await TaskService.updateTask(taskId, { status });
+      return res.status(200).json({
+        success: true,
+        message: "Task status updated successfully",
+        data: task,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async getDescriptionSuggestion(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { title } = req.body;
