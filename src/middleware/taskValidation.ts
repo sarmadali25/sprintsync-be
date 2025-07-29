@@ -8,8 +8,8 @@ const taskSchema = Joi.object({
     "any.required": "Title is required",
     "string.empty": "Title cannot be empty",
   }),
-  description: Joi.string().min(50).required().messages({
-    "string.min": "Description must be at least 50 characters long",
+  description: Joi.string().min(10).required().messages({
+    "string.min": "Description must be at least 10 characters long",
     "any.required": "Description is required",
     "string.empty": "Description cannot be empty",
   }),
@@ -34,8 +34,8 @@ const updateTaskSchema = Joi.object({
     "string.max": "Title cannot exceed 50 characters",
     "string.empty": "Title cannot be empty",
   }),
-  description: Joi.string().min(50).optional().messages({
-    "string.min": "Description must be at least 50 characters long",
+  description: Joi.string().min(10).optional().messages({
+    "string.min": "Description must be at least 10 characters long",
     "string.empty": "Description cannot be empty",
   }),
   status: Joi.string().valid("pending", "in_progress", "completed").optional().messages({
@@ -47,6 +47,14 @@ const updateTaskSchema = Joi.object({
   }),
   ownerId: Joi.string().uuid().optional().messages({
     "string.uuid": "Owner ID must be a valid UUID",
+  }),
+});
+
+const updateTaskStatusSchema = Joi.object({
+  status: Joi.string().valid("pending", "in_progress", "completed").required().messages({
+    "any.required": "Status is required",
+    "string.empty": "Status cannot be empty",
+    "any.only": "Status must be either pending, in_progress, or completed",
   }),
 });
 
@@ -76,4 +84,17 @@ const validateUpdateTask = (req: Request, res: Response, next: NextFunction): Re
   next();
 };
 
-export { validateTask, validateUpdateTask }
+const validateUpdateTaskStatus = (req: Request, res: Response, next: NextFunction): Response | void => {
+  const { error } = updateTaskStatusSchema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      error: "Validation failed",
+      message: error.details?.[0]?.message,
+    });
+  }
+
+  next();
+};
+
+export { validateTask, validateUpdateTask, validateUpdateTaskStatus };

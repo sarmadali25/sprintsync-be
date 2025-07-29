@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validateLogin, validateRegister } from '../middleware/authValidation';
-import { authenticateToken } from '../middleware/auth';
+import { authenticateToken, authenticateAdmin } from '../middleware/auth';
 import { AuthController } from '../controllers';
 
 const router = Router();
@@ -10,7 +10,7 @@ router.post('/login', validateLogin, AuthController.login);
 router.post('/signup', validateRegister, AuthController.register);
 
 router.get('/me', authenticateToken, AuthController.getCurrentUser);
-router.get("/all",authenticateToken,AuthController.getAllUsers)
+router.get("/all",authenticateAdmin,AuthController.getAllUsers)
 
 
 export default router;

@@ -1,15 +1,17 @@
 import { Router } from "express";
-import { authenticateToken } from "../middleware/auth";
-import { validateTask, validateUpdateTask } from "../middleware/taskValidation";
+import { authenticateAdmin, authenticateToken } from "../middleware/auth";
+import { validateTask, validateUpdateTask, validateUpdateTaskStatus } from "../middleware/taskValidation";
 import { TaskController } from "../controllers/TaskController";
 
 const router = Router();
 
-// Public routes
+// User routes
 router.get("/", authenticateToken, TaskController.getAllTasks);
 router.get("/:id", authenticateToken, TaskController.getTaskById);
-router.post("/", authenticateToken, validateTask, TaskController.createTask);
-router.patch("/:id", authenticateToken, validateUpdateTask, TaskController.updateTask);
-router.delete("/:id", authenticateToken, TaskController.deleteTask);
+router.patch("/:id", authenticateToken, validateUpdateTaskStatus, TaskController.updateTaskStatus);
+// Admin routes
+router.post("/", authenticateAdmin, validateTask, TaskController.createTask);
+router.put("/:id", authenticateAdmin, validateUpdateTask, TaskController.updateTask);
+router.delete("/:id", authenticateAdmin, TaskController.deleteTask);
 
 export default router;

@@ -117,4 +117,24 @@ export class TaskController {
       next(error);
     }
   }
+
+  static async updateTaskStatus(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const { status } = req.body;
+      const taskId = req.params?.["id"];
+      if (!taskId) {
+        return res.status(400).json({
+          message: "Task ID is required",
+        });
+      }
+      const task = await TaskService.updateTask(taskId, { status });
+      return res.status(200).json({
+        success: true,
+        message: "Task status updated successfully",
+        data: task,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
