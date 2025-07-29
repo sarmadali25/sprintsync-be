@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export class AuthService {
   private static readonly JWT_SECRET =
-    process.env["JWT_SECRET"] ?? "your-secret-key";
+    process.env["JWT_SECRET"]!;
   private static readonly SALT_ROUNDS = 12;
 
   static async register(data: RegisterData): Promise<AuthResponse> {
