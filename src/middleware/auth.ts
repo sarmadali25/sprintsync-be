@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {AuthService} from '../services';
-import { AuthError } from '../utils/errors';
+import { AuthError } from '../utils/errors.util';
 
 export interface AuthenticatedRequest extends Request {
   user?: {

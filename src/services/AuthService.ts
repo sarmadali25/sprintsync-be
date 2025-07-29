@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { AuthError } from "../utils/errors";
+import { AuthError } from "../utils/errors.util";
 import { AuthResponse, RegisterData, LoginCredentials } from "../types/auth";
 import { UserHandler } from "../handlers/";
 import { v4 as uuidv4 } from "uuid";
