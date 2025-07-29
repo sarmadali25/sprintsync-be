@@ -9,6 +9,7 @@ interface UserAttributes {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  isAdmin?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -23,6 +24,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public firstName!: string;
   public lastName!: string;
   public phoneNumber!: string;
+  public isAdmin!: boolean;
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -57,6 +59,11 @@ User.init(
     phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {
