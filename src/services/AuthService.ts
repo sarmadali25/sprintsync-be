@@ -65,7 +65,7 @@ export class AuthService {
       }
 
       // Generate JWT token
-      const token = this.generateToken(user.id);
+      const token = this.generateToken(user.id,user.isAdmin);
 
       // Return user data without password
       const { password: _,isAdmin, ...userWithoutPassword } = user.toJSON();
@@ -115,15 +115,15 @@ export class AuthService {
     }
   }
 
-  private static generateToken(userId: string): string {
-    return jwt.sign({ userId, iat: Date.now() }, this.JWT_SECRET, {
+  private static generateToken(userId: string,isAdmin?:boolean): string {
+    return jwt.sign({ userId, isAdmin, iat: Date.now() }, this.JWT_SECRET, {
       expiresIn: "24h",
     });
   }
 
-  static verifyToken(token: string): { userId: number } {
+  static verifyToken(token: string): { userId: string, isAdmin: boolean } {
     try {
-      const decoded = jwt.verify(token, this.JWT_SECRET) as { userId: number };
+      const decoded = jwt.verify(token, this.JWT_SECRET) as { userId: string, isAdmin: boolean };
       return decoded;
     } catch (error) {
       throw new AuthError("Invalid token", 401);
