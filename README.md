@@ -27,7 +27,6 @@ A robust Node.js/Express.js backend API for task management and assignment with 
   - Input validation with Joi
   - Error handling middleware
 
-## 📋 Prerequisites
 
 - Node.js (v16 or higher)
 - PostgreSQL (v12 or higher)
@@ -145,6 +144,18 @@ The seeder creates two demo users:
 - **Role:** User (limited access)
 
 ## 📚 API Documentation
+
+### Interactive API Documentation
+The API documentation is available through Swagger UI at:
+```
+http://localhost:3000/api-docs
+```
+
+This interactive documentation allows you to:
+- Explore all available endpoints
+- Test API calls directly from the browser
+- View request/response schemas
+- Authenticate with JWT tokens
 
 ### Base URL
 ```
