@@ -13,7 +13,7 @@ export class AuthService {
   static async register(data: RegisterData): Promise<AuthResponse> {
     try {
       // Check if user already exists
-      const existingUser = await UserHandler.getUserWithEmail(data.email);
+      const existingUser = await UserHandler.getUserWithEmail(data.email.toLowerCase());
       if (existingUser) {
         throw new AuthError("User with this email already exists", 400);
       }
@@ -24,7 +24,7 @@ export class AuthService {
       // Create user
       const userData = {
         id: uuidv4(),
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: hashedPassword,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -50,7 +50,7 @@ export class AuthService {
   static async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       // Find user by email
-      const user = await UserHandler.getUserWithEmail(credentials.email);
+      const user = await UserHandler.getUserWithEmail(credentials.email.toLowerCase());
       if (!user) {
         throw new AuthError("User not found with this email", 401);
       }
