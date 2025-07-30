@@ -6,7 +6,7 @@ import { TaskAttributes, TaskUpdateAttributes } from "../types/task";
 import fetchPromptResult from '../utils/AI-generate.util';
 
 export class TaskService {
-  static async getAllTasks() {
+  static async getAllTasks() : Promise<TaskAttributes[]> {
     try {
       const tasks = await TaskHandler.getAllTasks();
       return tasks;
@@ -18,7 +18,7 @@ export class TaskService {
     }
   }
 
-  static async getTaskById(id: string) {
+  static async getTaskById(id: string) : Promise<TaskAttributes> {
     try {
       const task = await TaskHandler.getTaskById(id);
       if (!task) {
@@ -33,7 +33,7 @@ export class TaskService {
     }
   }
 
-  static async createTask(task: TaskAttributes) {
+  static async createTask(task: TaskAttributes) : Promise<TaskAttributes> {
     try {
       const newTask = await TaskHandler.createTask({
         id: uuidv4(),
@@ -53,7 +53,7 @@ export class TaskService {
     }
   }
 
-  static async updateTask(id: string, task: TaskUpdateAttributes) {
+  static async updateTask(id: string, task: TaskUpdateAttributes) : Promise<TaskAttributes> {
     try {
       const taskToUpdate = await TaskHandler.getTaskById(id);
       if (!taskToUpdate) {
@@ -72,7 +72,7 @@ export class TaskService {
     }
   }
 
-  static async deleteTask(id: string) {
+  static async deleteTask(id: string) : Promise<void> {
     try {
       const taskToDelete = await TaskHandler.getTaskById(id);
       if (!taskToDelete) {
@@ -87,7 +87,7 @@ export class TaskService {
     }
   }
 
-  static async getDescriptionSuggestion(_title: string) {
+  static async getDescriptionSuggestion(_title: string) : Promise<string> {
     const prompt = `Wite me a description for this task title: '${_title}' it should be max 100 words`;
     try {
       const description = await fetchPromptResult(prompt);

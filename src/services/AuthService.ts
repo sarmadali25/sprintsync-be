@@ -83,7 +83,7 @@ export class AuthService {
     }
   }
 
-  static async getUserById(userId: string) {
+  static async getUserById(userId: string) : Promise<AuthResponse["user"]> {
     try {
       const user = await UserHandler.getUserWithId(userId);
       if (!user) {
@@ -99,7 +99,7 @@ export class AuthService {
     }
   }
 
-  static async getAllUsers() {
+  static async getAllUsers() : Promise<AuthResponse["user"][]> {
     try {
       const users = await UserHandler.getAllUsers();
       const sanitizedUsers = users.map((user) => {

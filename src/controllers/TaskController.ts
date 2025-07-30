@@ -149,7 +149,7 @@ export class TaskController {
       } else if (status === "completed") {
         const currentTask = await TaskService.getTaskById(taskId);
         const timeTaken =
-          new Date().getTime() - new Date(currentTask.totalTime).getTime();
+          new Date().getTime() - new Date(currentTask.totalTime!).getTime();
 
         const totalMinutes = Math.floor(timeTaken / (1000 * 60));
         editObject.totalTime = totalMinutes.toString();

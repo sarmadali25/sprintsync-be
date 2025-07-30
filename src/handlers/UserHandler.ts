@@ -1,4 +1,5 @@
 import { User } from "../models";
+import {UserAttributes} from "../types/user";
 
 export class UserHandler {
   static async getUserWithEmail(email: string) {
@@ -18,14 +19,7 @@ export class UserHandler {
     firstName,
     lastName,
     phoneNumber,
-  }: {
-    id: string;
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-  }) {
+  }: UserAttributes) {
     const user = await User.create({
       id,
       email,
