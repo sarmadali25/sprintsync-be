@@ -1,5 +1,5 @@
 services:
-  # PostgreSQL Database
+  # PostgreSQL Database (for local development only)
   postgres:
     image: postgres:15-alpine
     container_name: sprintsync-postgres
@@ -27,12 +27,23 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: sprintsync
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      # Railway database variables (with fallbacks for local development)
+      DATABASE_URL: ${DATABASE_URL}
+      PGHOST: ${PGHOST:-postgres}
+      PGPORT: ${PGPORT:-5432}
+      PGDATABASE: ${PGDATABASE:-sprintsync}
+      PGUSER: ${PGUSER:-postgres}
+      PGPASSWORD: ${PGPASSWORD:-postgres}
+      # Fallback to original variables for local development
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-sprintsync}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      # JWT Secret
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      # Port configuration
+      PORT: ${PORT:-3000}
     depends_on:
       postgres:
         condition: service_healthy
