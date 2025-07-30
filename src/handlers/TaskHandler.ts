@@ -18,7 +18,7 @@ export class TaskHandler {
   static async getAllTasks() : Promise<TaskAttributes[]> {
     const tasks = await Task.findAll({
       include: this.include,
-      order: [['createdAt', 'DESC']]
+      order: [['updatedAt', 'DESC']]
     });
     return tasks;
   }
