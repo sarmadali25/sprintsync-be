@@ -45,7 +45,9 @@ const server = app.listen(PORT, async () => {
   
   try {
     await testConnection();
-    await runMigrations();
+    if (process.env['NODE_ENV'] === 'production') {
+      await runMigrations();
+    }
   } catch (error) {
     console.error('❌ Database connection failed:', error);
     process.exit(1);
