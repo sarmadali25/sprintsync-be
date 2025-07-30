@@ -8,19 +8,16 @@
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
     "watch": "nodemon --exec ts-node src/server.ts",
-    
     "migrate": "NODE_ENV=development npx sequelize-cli db:migrate",
     "migrate:undo": "NODE_ENV=development npx sequelize-cli db:migrate:undo",
     "migrate:undo:all": "NODE_ENV=development npx sequelize-cli db:migrate:undo:all",
     "migrate:status": "NODE_ENV=development npx sequelize-cli db:migrate:status",
     "migrate:production": "NODE_ENV=production npx sequelize-cli db:migrate",
     "migrate:status:production": "NODE_ENV=production npx sequelize-cli db:migrate:status",
-
     "db:create": "NODE_ENV=development npx sequelize-cli db:create",
     "db:create:production": "NODE_ENV=production npx sequelize-cli db:create",
     "db:drop": "NODE_ENV=development npx sequelize-cli db:drop",
     "db:drop:production": "NODE_ENV=production npx sequelize-cli db:drop",
-
     "seed": "NODE_ENV=development npx sequelize-cli db:seed:all",
     "seed:undo": "NODE_ENV=development npx sequelize-cli db:seed:undo:all",
     "seed:production": "NODE_ENV=production npx sequelize-cli db:seed:all",
@@ -39,6 +36,8 @@
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -49,6 +48,8 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.10.0",
     "@types/sequelize": "^6.12.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.0.0",
     "sequelize-cli": "^6.6.3",
     "ts-node": "^10.9.0",

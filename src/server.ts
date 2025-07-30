@@ -3,10 +3,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 
 import router from './routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { testConnection, syncDatabase } from './config/dbConnection';
+import { specs } from './config/swagger';
 
 dotenv.config();
 
@@ -19,6 +21,14 @@ app.use(cors()); // Enable CORS
 app.use(morgan('combined')); // Logging
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+// Swagger documentation
+const swaggerOptions = {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'SprintSync API Documentation'
+};
+app.use('/api-docs', (swaggerUi as any).serve, (swaggerUi as any).setup(specs, swaggerOptions));
+
 app.use(router);
 
 app.use(errorHandler);
