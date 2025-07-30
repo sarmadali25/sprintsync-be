@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN yarn install --production=false
+RUN npm ci --only=dev
 
 # Copy source code
 COPY . .
 
 # Build TypeScript code
-RUN yarn build
+RUN npm run build
 
 # Production stage
 FROM node:18-alpine AS production
@@ -30,8 +30,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN yarn install --production=true && \
-    yarn cache clean
+RUN npm ci --only=production
 
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
