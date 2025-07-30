@@ -1,8 +1,8 @@
 # Multi-stage build for production
 FROM node:18-alpine AS builder
 
-# Install yarn globally
-RUN npm install -g yarn
+# Install yarn using apk (Alpine's package manager)
+RUN apk add --no-cache yarn
 
 # Set working directory
 WORKDIR /app
@@ -22,8 +22,8 @@ RUN yarn build
 # Production stage
 FROM node:18-alpine AS production
 
-# Install yarn globally in production stage
-RUN npm install -g yarn
+# Install yarn using apk (Alpine's package manager)
+RUN apk add --no-cache yarn
 
 # Create app user for security
 RUN addgroup -g 1001 -S nodejs && \
