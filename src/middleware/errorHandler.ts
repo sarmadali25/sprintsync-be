@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { AuthError, TaskError } from "../utils/errors.util";
 
 export const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack);
   // Handle custom errors
   if (err instanceof AuthError) {
     return res.status(err.statusCode).json({

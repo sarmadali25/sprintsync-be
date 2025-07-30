@@ -1,12 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 
 import router from './routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { errorLogger, structuredLogger } from './middleware/logging';
 import { testConnection, syncDatabase } from './config/dbConnection';
 import { specs } from './config/swagger';
 
@@ -18,7 +18,7 @@ const PORT = process.env['PORT'] || 3000;
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors()); // Enable CORS
-app.use(morgan('combined')); // Logging
+app.use(structuredLogger);
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
@@ -31,6 +31,7 @@ app.use('/api-docs', (swaggerUi as any).serve, (swaggerUi as any).setup(specs, s
 
 app.use(router);
 
+app.use(errorLogger);
 app.use(errorHandler);
 
 app.use("*", notFoundHandler);
