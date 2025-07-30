@@ -1,6 +1,9 @@
 # Multi-stage build for production
 FROM node:18-alpine AS builder
 
+# Install yarn globally
+RUN npm install -g yarn
+
 # Set working directory
 WORKDIR /app
 
@@ -8,16 +11,19 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN yarn install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
 # Build TypeScript code
-RUN npm run build
+RUN yarn build
 
 # Production stage
 FROM node:18-alpine AS production
+
+# Install yarn globally in production stage
+RUN npm install -g yarn
 
 # Create app user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -30,7 +36,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm install --only=production
+RUN yarn install --production --frozen-lockfile && \
+    yarn cache clean
 
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
