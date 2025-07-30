@@ -7,7 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import router from './routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { errorLogger, structuredLogger } from './middleware/logging';
-import { testConnection, syncDatabase } from './config/dbConnection';
+import { testConnection, runMigrations } from './config/dbConnection';
 import { specs } from './config/swagger';
 
 dotenv.config();
@@ -44,7 +44,7 @@ const server = app.listen(PORT, async () => {
   
   try {
     await testConnection();
-    await syncDatabase();
+    await runMigrations();
   } catch (error) {
     console.error('❌ Database connection failed:', error);
     process.exit(1);

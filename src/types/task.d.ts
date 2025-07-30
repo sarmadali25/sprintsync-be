@@ -3,8 +3,8 @@ export interface TaskAttributes {
   title: string;
   description: string;
   status: "pending" | "in_progress" | "completed";
-  assignedToId: number;
-  ownerId: number;
+  assignedToId: string;
+  ownerId: string;
   totalTime?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -14,7 +14,7 @@ export interface TaskUpdateAttributes {
   title?: string;
   description?: string;
   status?: "pending" | "in_progress" | "completed";
-  assignedToId?: number;
-  ownerId?: number;
+  assignedToId?: string;
+  ownerId?: string;
   totalTime?: string
 }

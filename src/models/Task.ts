@@ -11,8 +11,8 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> implements Task
   public title!: string;
   public description!: string;
   public status!: 'pending' | 'in_progress' | 'completed';
-  public assignedToId!: number;
-  public ownerId!: number;
+  public assignedToId!: string;
+  public ownerId!: string;
   public totalTime!: string;
   // Timestamps
   public readonly createdAt!: Date;
@@ -39,7 +39,7 @@ Task.init(
       defaultValue: 'pending',
     },
     assignedToId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'users',
@@ -47,7 +47,7 @@ Task.init(
       },
     },
     ownerId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'users',
