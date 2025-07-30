@@ -21,8 +21,7 @@
     "seed": "NODE_ENV=development npx sequelize-cli db:seed:all",
     "seed:undo": "NODE_ENV=development npx sequelize-cli db:seed:undo:all",
     "seed:production": "NODE_ENV=production npx sequelize-cli db:seed:all",
-    "seed:undo:production": "NODE_ENV=production npx sequelize-cli db:seed:undo:all",
-    "postinstall": "npm run build"
+    "seed:undo:production": "NODE_ENV=production npx sequelize-cli db:seed:undo:all"
   },
   "dependencies": {
     "@cerebras/cerebras_cloud_sdk": "^1.35.0",

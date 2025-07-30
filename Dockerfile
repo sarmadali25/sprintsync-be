@@ -1,29 +1,23 @@
 # Multi-stage build for production
 FROM node:18-alpine AS builder
 
-# Install yarn using apk (Alpine's package manager)
-RUN apk add --no-cache yarn
-
 # Set working directory
 WORKDIR /app
 
 # Copy package files for dependency installation
 COPY package*.json ./
 
-# Install dependencies
-RUN yarn install
+# Install dependencies using npm (yarn is not needed)
+RUN npm ci
 
 # Copy source code
 COPY . .
 
 # Build TypeScript code with more lenient settings for build
-RUN yarn build || (echo "Build failed, checking for TypeScript errors..." && yarn tsc --noEmit)
+RUN npm run build || (echo "Build failed, checking for TypeScript errors..." && npx tsc --noEmit)
 
 # Production stage
 FROM node:18-alpine AS production
-
-# Install yarn using apk (Alpine's package manager)
-RUN apk add --no-cache yarn
 
 # Create app user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -35,9 +29,9 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN yarn install --production && \
-    yarn cache clean
+# Install only production dependencies using npm
+RUN npm ci --only=production && \
+    npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
