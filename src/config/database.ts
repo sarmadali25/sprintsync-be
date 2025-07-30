@@ -5,6 +5,11 @@ dotenv.config();
 
 // Railway provides DATABASE_URL, but we'll also support individual variables
 const getDatabaseConfig = () => {
+  console.log('=== DATABASE DEBUG ===');
+  console.log('DATABASE_URL:', process.env['DATABASE_URL']);
+  console.log('Parsed URL:', process.env['DATABASE_URL'] ? new URL(process.env['DATABASE_URL']) : 'N/A');
+  console.log('=====================');
+
   // If DATABASE_URL is provided (Railway's preferred method)
   if (process.env['DATABASE_URL']) {
     return {
@@ -21,7 +26,13 @@ const getDatabaseConfig = () => {
         ssl: process.env['NODE_ENV'] === 'production' ? {
           require: true,
           rejectUnauthorized: false
-        } : false
+        } : false,
+        // Force IPv4 for Railway compatibility
+        family: 4
+      },
+      // Add retry logic for Railway
+      retry: {
+        max: 3
       }
     };
   }
