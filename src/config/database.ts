@@ -5,13 +5,6 @@ dotenv.config();
 
 // Railway provides DATABASE_URL, but we'll also support individual variables
 const getDatabaseConfig = () => {
-  console.log('=== DATABASE DEBUG ===');
-  console.log('DATABASE_URL:', process.env['DATABASE_URL']);
-  console.log('PGHOST:', process.env['PGHOST']);
-  console.log('PGUSER:', process.env['PGUSER']);
-  console.log('PGDATABASE:', process.env['PGDATABASE']);
-  console.log('=====================');
-
   // For Railway, prefer individual variables over DATABASE_URL to avoid private domain issues
   if (process.env['PGHOST'] && process.env['PGUSER'] && process.env['PGDATABASE']) {
     return {

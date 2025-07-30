@@ -15,16 +15,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env['PORT'] || 3000;
 
-console.log('=== DATABASE CONNECTION DEBUG ===');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
-console.log('PGHOST:', process.env.PGHOST);
-console.log('PGPORT:', process.env.PGPORT);
-console.log('PGDATABASE:', process.env.PGDATABASE);
-console.log('PGUSER:', process.env.PGUSER);
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_PORT:', process.env.DB_PORT);
-console.log('================================');
 
 // Middleware
 app.use(helmet()); // Security headers
@@ -51,7 +41,7 @@ app.use("*", notFoundHandler);
 const server = app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📱 Environment: ${process.env['NODE_ENV'] || 'development'}`);
-  console.log(` Health check: http://localhost:${PORT}/health`);
+  console.log(` Health check: http://localhost:${PORT}/api/v1/health`);
   
   try {
     await testConnection();
