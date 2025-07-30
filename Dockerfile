@@ -36,8 +36,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN yarn install --production && \
-    yarn cache clean
+RUN yarn install --production 
 
 # Copy built application from builder stage
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
